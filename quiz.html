@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ai Là Triệu Phú - Pixel Edition</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --line: #334155;
+            --txt: #e2e8f0;
+            --accent: #eab308;
+            --blue: #3b82f6;
+        }
+
+        body {
+            margin: 0;
+            background: radial-gradient(circle at center, #020617, #0f172a);
+            color: var(--txt);
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .main-layout {
+            display: flex;
+            background: #1e293b;
+            border: 1px solid var(--line);
+            border-radius: 20px;
+            box-shadow: 0 0 80px rgba(37, 99, 235, 0.15);
+            overflow: hidden;
+            width: 95%;
+            max-width: 1100px;
+            min-height: 600px;
+        }
+
+        /* Left Side: Game */
+        .game-area {
+            flex: 1;
+            padding: 40px;
+            position: relative;
+            background: radial-gradient(circle at 50% 30%, #293548, #1e293b);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Right Side: Ladder */
+        .ladder-area {
+            width: 240px;
+            background: #0f172a;
+            border-left: 1px solid var(--line);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        h1 {
+            color: var(--blue);
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.5);
+            margin: 0 0 5px;
+            text-align: center;
+        }
+
+        .sub-header {
+            color: #94a3b8;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .question-box {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.8), rgba(15, 23, 42, 0.6));
+            border: 2px solid #5784ba;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            font-size: 22px;
+            font-weight: 600;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+            color: #fff;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .answer-btn {
+            background: #0f172a;
+            border: 1px solid #475569;
+            padding: 15px 20px;
+            border-radius: 50px;
+            /* Pill shape */
+            color: #cbd5e1;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .answer-btn:hover {
+            background: #eab308;
+            border-color: #facc15;
+            color: #000;
+            font-weight: 600;
+        }
+
+        .answer-btn .opt {
+            color: #eab308;
+            font-weight: 700;
+        }
+
+        .answer-btn:hover .opt {
+            color: #000;
+        }
+
+        .answer-btn.correct {
+            background: #22c55e !important;
+            border-color: #22c55e !important;
+            color: #fff !important;
+            animation: flash 0.5s infinite alternate;
+        }
+
+        .answer-btn.correct .opt {
+            color: #fff;
+        }
+
+        .answer-btn.wrong {
+            background: #991b1b !important;
+            border-color: #ef4444 !important;
+        }
+
+        @keyframes flash {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0.7;
+            }
+        }
+
+        .feedback {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            min-height: 28px;
+            font-weight: 500;
+        }
+
+        .feedback.success {
+            color: #4ade80;
+            text-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+        }
+
+        .feedback.fail {
+            color: #f87171;
+        }
+
+        /* Ladder List */
+        .ladder {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 13px;
+        }
+
+        .ladder li {
+            padding: 6px 12px;
+            border-radius: 6px;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+
+        .ladder li.active {
+            background: #eab308;
+            color: #0f172a;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);
+        }
+
+        .ladder li.passed {
+            color: #94a3b8;
+        }
+
+        .ladder li .num {
+            width: 24px;
+        }
+
+        .controls {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            background: linear-gradient(to right, #eab308, #ca8a04);
+            color: #fff;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 99px;
+            font-weight: 700;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(234, 179, 8, 0.4);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(234, 179, 8, 0.6);
+        }
+
+        .home-link {
+            position: absolute;
+            top: 25px;
+            left: 30px;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        @media (max-width: 800px) {
+            .main-layout {
+                flex-direction: column-reverse;
+                width: 100%;
+                min-height: 100vh;
+                border-radius: 0;
+            }
+
+            .ladder-area {
+                width: 100%;
+                flex-direction: row;
+                padding: 10px;
+                overflow-x: auto;
+                border-left: none;
+                border-bottom: 1px solid var(--line);
+            }
+
+            .ladder {
+                display: flex;
+                gap: 10px;
+                flex-direction: row-reverse;
+            }
+
+            .ladder li {
+                font-size: 12px;
+                padding: 4px 8px;
+                white-space: nowrap;
+            }
+
+            .game-area {
+                padding: 20px;
+            }
+
+            .answers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Background Animation */
+        .bg-anim {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rays {
+            position: absolute;
+            width: 200vmax;
+            height: 200vmax;
+            background: repeating-conic-gradient(from 0deg,
+                    rgba(59, 130, 246, 0.05) 0deg 10deg,
+                    rgba(30, 41, 59, 0) 10deg 20deg);
+            animation: rotate 60s linear infinite;
+        }
+
+        .core-glow {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(15, 23, 42, 0) 70%);
+            animation: pulse-glow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes pulse-glow {
+            from {
+                opacity: 0.5;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1.1);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-anim">
+        <div class="rays"></div>
+        <div class="core-glow"></div>
+    </div>
+
+    <div class="main-layout">
+        <div class="game-area">
+            <a href="index.html" class="home-link" title="Trở về">🏠</a>
+            <h1>AI LÀ TRIỆU PHÚ</h1>
+            <div class="sub-header" id="statusText">Câu hỏi 1/15</div>
+
+            <div class="question-box" id="qText">
+                Đang tải dữ liệu...
+            </div>
+
+            <div class="answers-grid" id="answersGrid">
+                <button class="answer-btn" onclick="selectAnswer(0)"><span class="opt">A</span> <span
+                        class="txt">...</span></button>
+                <button class="answer-btn" onclick="selectAnswer(1)"><span class="opt">B</span> <span
+                        class="txt">...</span></button>
+                <button class="answer-btn" onclick="selectAnswer(2)"><span class="opt">C</span> <span
+                        class="txt">...</span></button>
+                <button class="answer-btn" onclick="selectAnswer(3)"><span class="opt">D</span> <span
+                        class="txt">...</span></button>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+
+            <div class="controls" id="controls" style="display:none">
+                <button class="action-btn" id="btnNext">Tiếp tục ➜</button>
+            </div>
+        </div>
+
+        <div class="ladder-area">
+            <h3 style="color:var(--accent); margin:0 0 15px; text-align:center; font-size:16px">MỨC THƯỞNG</h3>
+            <ul class="ladder" id="ladderList">
+                <!-- JS will populate -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Audio Placeholders (using free simplistic audio URLs or just empty for now, user can replace) -->
+    <!-- We will simulate "Aplause" with a visual effect if no audio is available, but for now let's add audio tags -->
+    <audio id="sfxCorrect" src="https://assets.mixkit.co/active_storage/sfx/2000/2000-preview.mp3"></audio>
+    <audio id="sfxWrong" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3"></audio>
+    <audio id="sfxWin" src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3"></audio>
+    <!-- Background music (loop) -->
+    <audio id="bgMusic" loop src="https://assets.mixkit.co/active_storage/sfx/123/123-preview.mp3"></audio>
+    <!-- Note: These are example URLs (free placeholders). Ideally local files. -->
+
+    <script>
+        const BANK = [
+            { q: "Con gì càng to càng nhỏ?", a: ["Con voi", "Con cua", "Con kiến", "Con heo"], c: 1, e: "Con cua có cái càng :v" },
+            { q: "Cái gì đen khi bạn mua nó, đỏ khi dùng nó, và xám khi vứt nó đi?", a: ["Than đá", "Quả mận", "Cái bút chì", "Máu"], c: 0, e: "Than đá nướng BBQ!" },
+            { q: "Bệnh gì bác sĩ bó tay?", a: ["Gãy tay", "Gãy chân", "Đau đầu", "Sâu răng"], c: 0, e: "Bó bột chứ làm gì!" },
+            { q: "Cái gì tay trái cầm được còn tay phải cầm không được?", a: ["Cây bút", "Cái thìa", "Cùi chỏ tay phải", "Cùi chỏ tay trái"], c: 2, e: "Đố bạn cầm được đấy!" },
+            { q: "Từ nào trong tiếng Việt có 9 từ h?", a: ["Chính", "Hành", "Chính Chinh", "Hạnh"], c: 0, e: "C-h-í-n-h (chín - h)" },
+            { q: "Càng chơi càng ra nước?", a: ["Đánh bài", "Đánh cờ", "Đá bóng", "Bơi lội"], c: 1, e: "Cờ tướng/Cờ vua => Đi uống nước (Nước đi)" },
+            { q: "Có 1 đàn chim đậu trên cành, người thợ săn bắn cái rầm. Hỏi chết mấy con?", a: ["1", "15", "0", "Cả đàn"], c: 1, e: "Bắn cái rầm là Rằm (15) :))" },
+            { q: "Con gì đầu dê mình ốc?", a: ["Con dốc", "Con dê", "Con ốc sên", "ái chà chà"], c: 0, e: "Con Dốc (Đầu Dê, Mình Ốc)" },
+            { q: "Vừa bằng một thước mà bước không qua?", a: ["Cái cửa", "Cái chân", "Cái bóng", "Sợi dây"], c: 2, e: "Đố bước qua được cái bóng của mình!" },
+            { q: "Cái gì chặt không đứt, bứt không rời, phơi không khô, đốt không cháy?", a: ["Nước", "Sợi dây sắt", "Lửa", "Tình yêu"], c: 0, e: "Chém nước giữa dòng.." },
+            { q: "Bà đó sạ lúa chết, hỏi tại sao bả chết?", a: ["Bả ngộ độc", "Bả bị rắn cắn", "Bò đá", "Té ruộng"], c: 2, e: "Bà đó là Bò đá =))" },
+            { q: "Môn gì càng thắng càng thua?", a: ["Đua xe", "Đua ngựa", "Đua xe đạp", "Kéo co"], c: 2, e: "Xe đạp thắng (phanh) lại là thua người ta chạy mất rồi!" },
+            { q: "Một ly thuỷ tinh đựng đầy nước, làm sao lấy nước dưới đáy ly mà không đổ ra ngoài?", a: ["Dùng ống hút", "Đập bể ly", "Uống hết", "Đợi bốc hơi"], c: 0, e: "Dùng ống hút là hút được đáy liền." },
+            { q: "Lịch nào dài nhất?", a: ["Lịch sử", "Lịch vạn niên", "Lịch treo tường", "Lịch nghỉ tết"], c: 0, e: "Lịch sử dài mấy ngàn năm lận." },
+            { q: "Con chó đen người ta gọi là con chó mực. Con chó vàng, người ta gọi là con chó phèn. Con chó sanh người ta gọi là con chó đẻ. Vậy con chó đỏ, người ta gọi là con chó gì?", a: ["Chó đỏ", "Chó điên", "Chó lửa", "Chó chết"], c: 0, e: "Gọi là con chó đỏ thôi, bị lừa chưa :v" },
+            { q: "Sở thú bị cháy, con gì chạy ra đầu tiên?", a: ["Con chim", "Con voi", "Con rắn", "Con người"], c: 3, e: "Con người chạy lẹ nhất chứ còn ai!" },
+            { q: "Nơi nào có đường xá, nhưng không có xe cộ; có nhà ở, nhưng không có người; có siêu thị, công ty... nhưng không có hàng hóa... Đó là nơi nào?", a: ["Thành phố ma", "Bản đồ", "Sao Hoả", "Trong mơ"], c: 1, e: "Bản đồ giấy đó." },
+            { q: "Cái gì người mua biết, người bán biết, người xài không bao giờ biết?", a: ["Tiền giả", "Quan tài", "Bí mật", "Đồ ăn"], c: 1, e: "Người nằm trong quan tài sao biết được!" },
+            { q: "Hai người đào trong hai giờ thì được một cái hố. Vậy hỏi một người đào trong một giờ thì được mấy cái hố?", a: ["1", "0.5", "2", "Không có cái nào"], c: 0, e: "Hố nhỏ vẫn là 1 cái hố!" },
+            { q: "1 'ơi' + 1 'ơi' = ?", a: ["2 ơi", "Ơi ơi", "Bơi", "Điếc"], c: 2, e: "1 'ơi' cộng 1 'ơi' thành 'bơi' (chơi chữ hình dáng số 1 và dấu +)" },
+            { q: "Khi Beckham thực hiện quả đá phạt đền, anh ta sẽ sút vào đâu?", a: ["Góc trái", "Góc phải", "Thủ môn", "Quả bóng"], c: 3, e: "Sút vào quả bóng chứ sút vào đâu mới bay được!" },
+            { q: "Có 1 bà già đi chợ, gặp 1 con cò lùi. Hỏi tại sao bà ấy quay về?", a: ["Quên tiền", "Thấy điềm gở", "Cò lùi là cò không tiến", "Trời mưa"], c: 2, e: "Cò lùi = Cò không tiến = Tiền không có." },
+            { q: "Bên trái đường có một căn nhà xanh, bên phải đường có một căn nhà đỏ. Vậy, nhà trắng ở đâu?", a: ["Ở giữa", "Sau lưng", "Ở Mỹ", "Không có"], c: 2, e: "Nhà Trắng (White House) ở Washington, Mỹ." },
+            { q: "Làm thế nào để nhốt 10 con trâu vào 9 cái chuồng mà mỗi chuồng vẫn có 1 con trâu?", a: ["Không thể", "Nhốt 2 con 1 chuồng", "Xây thêm chuồng", "Mẹo chữ"], c: 3, e: "Nhốt vào chuồng chữ 'K-H-Ô-N-G' 'C-Ó'..." },
+            { q: "Có bao nhiêu chữ C trong câu sau: 'Cơm, canh, cháo gì tớ cũng thích ăn!'", a: ["1", "2", "3", "4"], c: 0, e: "Chữ C in hoa chỉ có 1 ở đầu câu thôi!" },
+            { q: "Cái gì lưỡi to hơn miệng, mép dài hơn râu. Khi vui thì nói cười âu, khi buồn lại khóc chẳng sầu chẳng lo?", a: ["Cái nón", "Cái mặt nạ", "Con đò", "Cái đàn"], c: 0, e: "Cái nón (Lưỡi trai, Quai nón)." },
+            { q: "Một kẻ giết người bị kết án tử hình. Hắn ta phải chọn một trong ba căn phòng: Phòng thứ nhất lửa cháy dữ dội, Phòng thứ hai đầy những kẻ ám sát đang giương súng, và Phòng thứ ba đầy sư tử nhịn đói trong ba năm. Phòng nào an toàn nhất cho hắn?", a: ["Phòng 1", "Phòng 2", "Phòng 3", "Không phòng nào"], c: 2, e: "Sư tử nhịn đói 3 năm chết queo rồi." },
+            { q: "Cơ quan quan trọng nhất của phụ nữ là gì?", a: ["Trái tim", "Bộ não", "Hội Liên Hiệp Phụ Nữ", "Đôi mắt"], c: 2, e: "Hội Liên Hiệp Phụ Nữ VN :))" },
+            { q: "A gọi B bằng bác, B gọi C là ông nội, C kêu D là cậu, D kêu E là dì, E kêu F là chú, F gọi Z là con. Hỏi A gọi Z bằng gì?", a: ["Bằng mồm", "Ông cố", "Cụ tổ", "Dì ghẻ"], c: 0, e: "Gọi bằng mồm chứ bằng gì!" },
+            { q: "Nắng ba năm tôi không bỏ bạn, mưa một ngày bạn lại bỏ tôi. Là cái gì?", a: ["Người yêu cũ", "Cái bóng", "Đôi giày", "Cái dù"], c: 1, e: "Cái bóng của bạn đó." },
+        ];
+
+        let idx = 0;
+        let score = 0;
+        let canAns = true;
+        let currQ = null;
+        const PRIZES = [
+            200, 400, 600, 1000, 2000,
+            3000, 6000, 10000, 14000, 22000,
+            30000, 40000, 60000, 85000, 150000
+        ];
+
+        const UI = {
+            qText: document.getElementById("qText"),
+            btns: document.querySelectorAll(".answer-btn"),
+            feedback: document.getElementById("feedback"),
+            status: document.getElementById("statusText"),
+            controls: document.getElementById("controls"),
+            btnNext: document.getElementById("btnNext"),
+            ladder: document.getElementById("ladderList"),
+            sfx: {
+                correct: document.getElementById("sfxCorrect"),
+                wrong: document.getElementById("sfxWrong"),
+                win: document.getElementById("sfxWin"),
+            }
+        };
+
+        function playSound(type) {
+            UI.sfx[type].currentTime = 0;
+            UI.sfx[type].play().catch(e => console.log("Audio play failed (user interaction needed)", e));
+        }
+
+        // Generate Ladder
+        function renderLadder() {
+            UI.ladder.innerHTML = "";
+            for (let i = 14; i >= 0; i--) {
+                const li = document.createElement("li");
+                li.innerHTML = `<span class="num">${i + 1}</span> <span class="val">$${PRIZES[i].toLocaleString()}</span>`;
+                if (i === idx) li.className = "active";
+                else if (i < idx) li.className = "passed";
+
+                // Risk levels
+                if (i === 4 || i === 9 || i === 14) li.style.color = "#fff";
+                UI.ladder.appendChild(li);
+            }
+        }
+
+        function loadQ() {
+            if (idx >= 15) {
+                win();
+                return;
+            }
+
+            renderLadder();
+
+            // Pseudo random difficulty mapping
+            let bankIdx = (idx * 2) + (Math.floor(Math.random() * 2));
+            if (bankIdx >= BANK.length) bankIdx = Math.floor(Math.random() * BANK.length);
+
+            currQ = BANK[bankIdx];
+            canAns = true;
+
+            UI.qText.textContent = currQ.q;
+            UI.status.textContent = `Câu hỏi ${idx + 1}`;
+
+            UI.feedback.textContent = "";
+            UI.feedback.className = "feedback";
+            UI.controls.style.display = "none";
+
+            UI.btns.forEach((b, i) => {
+                const spanOpt = b.querySelector(".opt");
+                const spanTxt = b.querySelector(".txt");
+                if (!spanOpt) b.innerHTML = `<span class="opt">${String.fromCharCode(65 + i)}</span> <span class="txt">${currQ.a[i]}</span>`; // fix if overwritten
+                else spanTxt.textContent = currQ.a[i];
+
+                b.className = "answer-btn";
+                b.disabled = false;
+                b.classList.remove("correct", "wrong");
+            });
+        }
+
+        function selectAnswer(i) {
+            if (!canAns) return;
+            canAns = false;
+
+            const correct = currQ.c;
+            const btn = UI.btns[i];
+
+            if (i === correct) {
+                btn.classList.add("correct");
+                UI.feedback.textContent = "Chính xác! " + currQ.e;
+                UI.feedback.classList.add("success");
+                score++;
+                playSound("correct");
+            } else {
+                btn.classList.add("wrong");
+                UI.btns[correct].classList.add("correct");
+                UI.feedback.textContent = "Sai rồi! " + currQ.e;
+                UI.feedback.classList.add("fail");
+                playSound("wrong");
+            }
+
+            UI.controls.style.display = "block";
+
+            if (i === correct) {
+                if (idx === 14) {
+                    UI.btnNext.textContent = "NHẬN GIẢI 🏆";
+                    UI.btnNext.onclick = win;
+                } else {
+                    UI.btnNext.textContent = "Câu tiếp theo ➜";
+                    UI.btnNext.onclick = next;
+                }
+            } else {
+                UI.btnNext.textContent = "Chơi lại ↺";
+                UI.btnNext.onclick = restart;
+            }
+        }
+
+        function next() {
+            idx++;
+            loadQ();
+        }
+
+        function restart() {
+            idx = 0;
+            score = 0;
+            loadQ();
+        }
+
+        function win() {
+            playSound("win");
+            UI.qText.innerHTML = "🏆 CHÚC MỪNG BẠN LÀ TRIỆU PHÚ! 🏆<br><br>Bạn đã trả lời đúng 15/15 câu hỏi.";
+            UI.controls.style.display = "block";
+            UI.btnNext.textContent = "Chơi lại ↺";
+            UI.btnNext.onclick = restart;
+            UI.status.textContent = "CHIẾN THẮNG";
+            UI.feedback.textContent = "";
+            renderLadder(); // update to show top reached
+            const topLi = UI.ladder.querySelector("li");
+            if (topLi) topLi.classList.add("active");
+
+            // Hide answers to show celebration clearly
+            const ansGrid = document.getElementById("answersGrid");
+            if (ansGrid) ansGrid.style.display = "none";
+        }
+
+        // Init
+        loadQ();
+        window.selectAnswer = selectAnswer;
+    </script>
+</body>
+
+</html>

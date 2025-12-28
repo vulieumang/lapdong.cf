@@ -473,3 +473,97 @@ a.info-card {
     opacity: 1;
     transform: translateY(0);
 }
+
+/* Game Card Styles */
+.game-card {
+    grid-column: span 1;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.05));
+    border: 1px solid rgba(139, 92, 246, 0.4);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.1);
+}
+
+@media (min-width: 768px) {
+    .game-card {
+        grid-column: span 2;
+    }
+}
+
+.game-card:hover {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(59, 130, 246, 0.1));
+    transform: translateY(-5px) scale(1.02);
+    border-color: #8b5cf6;
+    box-shadow: 0 0 35px rgba(139, 92, 246, 0.3);
+}
+
+.game-card .icon-box {
+    background: rgba(139, 92, 246, 0.3);
+    color: #e0e7ff;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+}
+
+.game-card h3 {
+    color: #c4b5fd;
+    font-size: 1.4rem;
+}
+
+.game-card p {
+    color: #e0e7ff;
+    font-weight: 500;
+}
+
+.game-card .link-arrow {
+    color: #8b5cf6;
+}
+
+.game-card:hover .link-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Quiz Card Styles */
+.quiz-card {
+    grid-column: span 1;
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(250, 204, 21, 0.05));
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.1);
+}
+
+.quiz-card:hover {
+    background: linear-gradient(135deg, rgba(234, 179, 8, 0.25), rgba(250, 204, 21, 0.1));
+    transform: translateY(-5px) scale(1.02);
+    border-color: #eab308;
+    box-shadow: 0 0 35px rgba(234, 179, 8, 0.3);
+}
+
+.quiz-card .icon-box {
+    background: rgba(234, 179, 8, 0.3);
+    color: #fef08a;
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+}
+
+.quiz-card h3 {
+    color: #fde047;
+    font-size: 1.4rem;
+}
+
+.quiz-card p {
+    color: #fef08a;
+    font-weight: 500;
+}
+
+.quiz-card .link-arrow {
+    color: #eab308;
+}
+
+.quiz-card:hover .link-arrow {
+    opacity: 1;
+    transform: translateX(0);
+}
