@@ -382,6 +382,7 @@
 
     <script>
         const BANK = [
+            // Dễ (1-10) - Funny/Riddles
             { q: "Con gì càng to càng nhỏ?", a: ["Con voi", "Con cua", "Con kiến", "Con heo"], c: 1, e: "Con cua có cái càng :v" },
             { q: "Cái gì đen khi bạn mua nó, đỏ khi dùng nó, và xám khi vứt nó đi?", a: ["Than đá", "Quả mận", "Cái bút chì", "Máu"], c: 0, e: "Than đá nướng BBQ!" },
             { q: "Bệnh gì bác sĩ bó tay?", a: ["Gãy tay", "Gãy chân", "Đau đầu", "Sâu răng"], c: 0, e: "Bó bột chứ làm gì!" },
@@ -392,6 +393,8 @@
             { q: "Con gì đầu dê mình ốc?", a: ["Con dốc", "Con dê", "Con ốc sên", "ái chà chà"], c: 0, e: "Con Dốc (Đầu Dê, Mình Ốc)" },
             { q: "Vừa bằng một thước mà bước không qua?", a: ["Cái cửa", "Cái chân", "Cái bóng", "Sợi dây"], c: 2, e: "Đố bước qua được cái bóng của mình!" },
             { q: "Cái gì chặt không đứt, bứt không rời, phơi không khô, đốt không cháy?", a: ["Nước", "Sợi dây sắt", "Lửa", "Tình yêu"], c: 0, e: "Chém nước giữa dòng.." },
+
+            // Trung bình (11-20) - Funny/Logic
             { q: "Bà đó sạ lúa chết, hỏi tại sao bả chết?", a: ["Bả ngộ độc", "Bả bị rắn cắn", "Bò đá", "Té ruộng"], c: 2, e: "Bà đó là Bò đá =))" },
             { q: "Môn gì càng thắng càng thua?", a: ["Đua xe", "Đua ngựa", "Đua xe đạp", "Kéo co"], c: 2, e: "Xe đạp thắng (phanh) lại là thua người ta chạy mất rồi!" },
             { q: "Một ly thuỷ tinh đựng đầy nước, làm sao lấy nước dưới đáy ly mà không đổ ra ngoài?", a: ["Dùng ống hút", "Đập bể ly", "Uống hết", "Đợi bốc hơi"], c: 0, e: "Dùng ống hút là hút được đáy liền." },
@@ -401,7 +404,9 @@
             { q: "Nơi nào có đường xá, nhưng không có xe cộ; có nhà ở, nhưng không có người; có siêu thị, công ty... nhưng không có hàng hóa... Đó là nơi nào?", a: ["Thành phố ma", "Bản đồ", "Sao Hoả", "Trong mơ"], c: 1, e: "Bản đồ giấy đó." },
             { q: "Cái gì người mua biết, người bán biết, người xài không bao giờ biết?", a: ["Tiền giả", "Quan tài", "Bí mật", "Đồ ăn"], c: 1, e: "Người nằm trong quan tài sao biết được!" },
             { q: "Hai người đào trong hai giờ thì được một cái hố. Vậy hỏi một người đào trong một giờ thì được mấy cái hố?", a: ["1", "0.5", "2", "Không có cái nào"], c: 0, e: "Hố nhỏ vẫn là 1 cái hố!" },
-            { q: "1 'ơi' + 1 'ơi' = ?", a: ["2 ơi", "Ơi ơi", "Bơi", "Điếc"], c: 2, e: "1 'ơi' cộng 1 'ơi' thành 'bơi' (chơi chữ hình dáng số 1 và dấu +)" },
+            { q: "Cái gì đánh cha, đánh má, đánh anh, đánh chị, đánh em?", a: ["Cây gậy", "Bàn chải đánh răng", "Sóng thần", "Võ sĩ quyền anh"], c: 1, e: "Đánh răng hàng ngày đó!" },
+
+            // Khó (21-40) - IQ/Trick/New
             { q: "Khi Beckham thực hiện quả đá phạt đền, anh ta sẽ sút vào đâu?", a: ["Góc trái", "Góc phải", "Thủ môn", "Quả bóng"], c: 3, e: "Sút vào quả bóng chứ sút vào đâu mới bay được!" },
             { q: "Có 1 bà già đi chợ, gặp 1 con cò lùi. Hỏi tại sao bà ấy quay về?", a: ["Quên tiền", "Thấy điềm gở", "Cò lùi là cò không tiến", "Trời mưa"], c: 2, e: "Cò lùi = Cò không tiến = Tiền không có." },
             { q: "Bên trái đường có một căn nhà xanh, bên phải đường có một căn nhà đỏ. Vậy, nhà trắng ở đâu?", a: ["Ở giữa", "Sau lưng", "Ở Mỹ", "Không có"], c: 2, e: "Nhà Trắng (White House) ở Washington, Mỹ." },
@@ -412,6 +417,17 @@
             { q: "Cơ quan quan trọng nhất của phụ nữ là gì?", a: ["Trái tim", "Bộ não", "Hội Liên Hiệp Phụ Nữ", "Đôi mắt"], c: 2, e: "Hội Liên Hiệp Phụ Nữ VN :))" },
             { q: "A gọi B bằng bác, B gọi C là ông nội, C kêu D là cậu, D kêu E là dì, E kêu F là chú, F gọi Z là con. Hỏi A gọi Z bằng gì?", a: ["Bằng mồm", "Ông cố", "Cụ tổ", "Dì ghẻ"], c: 0, e: "Gọi bằng mồm chứ bằng gì!" },
             { q: "Nắng ba năm tôi không bỏ bạn, mưa một ngày bạn lại bỏ tôi. Là cái gì?", a: ["Người yêu cũ", "Cái bóng", "Đôi giày", "Cái dù"], c: 1, e: "Cái bóng của bạn đó." },
+
+            // New Addition
+            { q: "Con gì đập thì sống, không đập thì chết?", a: ["Con cá", "Con tim", "Con quay", "Con muỗi"], c: 1, e: "Tim không đập là tèo rồi." },
+            { q: "Biển nào không có nước?", a: ["Biển chết", "Biển báo", "Biển Đông", "Biển hồ"], c: 1, e: "Biển báo giao thông làm gì có nước." },
+            { q: "Xã nào đông nhất?", a: ["Xã hội", "Xã đàn", "Phường xã", "Thị xã"], c: 0, e: "Xã hội bao gồm tất cả mọi người." },
+            { q: "Quần gì rộng nhất?", a: ["Quần bò", "Quần đảo", "Quần tụ", "Quần chúng"], c: 1, e: "Quần đảo chứa nhiều đảo, rộng lắm." },
+            { q: "Cái gì càng kéo càng ngắn?", a: ["Sợi dây", "Cuộc đời", "Điếu thuốc", "Cây kẹo cao su"], c: 2, e: "Hút thuốc lá thì nó ngắn đi." },
+            { q: "Con gì sinh ra đã là vua?", a: ["Con cua hoàng đế", "Con cá sấu", "Con sói", "Con vua"], c: 0, e: "Cua 'Hoàng Đế' mà." },
+            { q: "Hoa gì biết ăn, biết nói, biết hát?", a: ["Hoa súng", "Hoa hậu", "Hoa hồng", "Hoa lan"], c: 1, e: "Cô Hoa hậu người thật việc thật." },
+            { q: "Cái gì đi thì nằm, đứng cũng nằm, nhưng nằm lại đứng?", a: ["Con rắn", "Bàn chân", "Cái võng", "Cây bút"], c: 1, e: "Bàn chân của chúng ta." },
+            { q: "Làm sao để cái cân tự cân chính nó?", a: ["Đặt lên cái cân khác", "Lật ngược lại", "Không thể", "Chiếu gương"], c: 1, e: "Lật ngược cái cân lại thì mâm cân sẽ đè lên thân cân :v (Mẹo vui)" }
         ];
 
         let idx = 0;
